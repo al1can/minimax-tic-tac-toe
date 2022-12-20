@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 class TicTacToe:
     table = []
@@ -13,22 +14,22 @@ class TicTacToe:
                 row.append('-')
             self.table.append(row)
     # Check if there any other empty spot on table
-    def is_table_filled(self):
+    def is_table_filled(self, table):
         is_filled = True
-        for row in self.table:
+        for row in table:
             for element in row:
                 if element=='-':
                     is_filled = False
         return is_filled
     # Check if given player won
-    def is_player_won(self,player):
+    def is_player_won(self, table, player):
         is_won = None
-        size = len(self.table)
+        size = len(table)
         # Checking if all points in horizontal line from same player
         for row in range(size):
             is_won = True
             for element in range(size):
-                if self.table[row][element]!=player:
+                if table[row][element]!=player:
                     is_won = False
                     break
             if is_won:return is_won
@@ -36,7 +37,7 @@ class TicTacToe:
         for row in range(size):
             is_won = True
             for element in range(size):
-                if self.table[element][row]!=player:
+                if table[element][row]!=player:
                     is_won = False
                     break
             if is_won:return is_won
@@ -47,7 +48,7 @@ class TicTacToe:
         # _ _ X
         for element in range(size):
             is_won = True
-            if self.table[element][element]!=player:
+            if table[element][element]!=player:
                 is_won = False
                 break
         if is_won:return is_won
@@ -58,18 +59,18 @@ class TicTacToe:
         # X _ _
         for element in range(size):
             is_won = True
-            if self.table[element][size - 1 - element]!=player:
+            if table[element][size - 1 - element]!=player:
                 is_won = False
                 break
         if is_won:return is_won
 
         return is_won
-    # Print table
+    # Print the table
     def print_table(self):
-        for row in self.table:
-            for element in row:
-                print(f"{element} ",end="")
-            print("\n")
+        for i, row in enumerate(self.table):
+            print(" ", end="")
+            print(*row,sep=" | ")
+            if i!=2: print('---+---+---') 
     # Pick a random player
     def random_player(self):
         player = random.choice(['X','O'])
@@ -101,36 +102,96 @@ class TicTacToe:
     # Swap the players
     def player_swap(self,player):
         return 'X' if player=='O' else 'O'
-    # Return available spots
-    def avail_spots(self):
-        avail_spots = []
-        for row in self.table:
-            for col in self.table:
-                avail_spots.append([row, col])
+    # Return available cells
+    def available_cells(self, table):
+        available_cells = []
+        for y, row in enumerate(table):
+            for x, col in enumerate(row):
+                if col == '-':
+                    available_cells.append([x, y])
+        return available_cells
+
+    # Minimax
+    def minimax(self, table, player):
+        if self.is_player_won(table, 'X'):
+            return [10]
+        elif self.is_player_won(table, 'O'):
+            return [-10]
+        elif self.is_table_filled(table):
+            return [0]
+
+        human_player = 'O'
+        ai_player = 'X'
+
+        if player == ai_player:
+            best_value = -float("Inf")
+        else:
+            best_value = float("Inf")
+        for cell in self.available_cells(table):
+            new_table = deepcopy(table)
+            new_table[cell[1]][cell[0]] = player
+
+            if player == ai_player:                
+                score = self.minimax(new_table, human_player)[0]
+            elif player == human_player:
+                score = self.minimax(new_table, ai_player)[0]
+
+            if player == ai_player and score > best_value:
+                best_value = score
+                best_move = cell
+            elif player == human_player and score < best_value:
+                best_value = score
+                best_move = cell
+        return [best_value, best_move]
 
 def main():
     # Create the class instance
     tic_tac_toe = TicTacToe()
     # Pick a random player
-    player = tic_tac_toe.random_player()
+    #player = tic_tac_toe.random_player()
+    player = 'X'
     # Game loop
     while True:
         # Print the table
         tic_tac_toe.print_table()
         # Swap players
-        player = tic_tac_toe.player_swap(player)
+        # player = tic_tac_toe.player_swap(player)
         # Player makes move
         tic_tac_toe.player_move(player)
+
+        tic_tac_toe.minimax(tic_tac_toe.table)
+
         # Check if there is a win
-        if tic_tac_toe.is_player_won(player):
+        if tic_tac_toe.is_player_won(player, tic_tac_toe.table):
+            # Print the final version of table
+            tic_tac_toe.print_table()
             print(f"player {player} is won!")
             break
         # Check if there is empty cells in the table
-        if tic_tac_toe.is_table_filled():
+        if tic_tac_toe.is_table_filled(tic_tac_toe.table):
+            # Print the final version of table
+            tic_tac_toe.print_table()
             print("It is a draw!")
             break
-    # Print the table last time to show the completed table
-    tic_tac_toe.print_table()
 
 if __name__ == '__main__':
-    main()
+    #main()
+    tic_tac_toe = TicTacToe()
+    player = 'X'
+    x_winning = [
+	["X", "-", "O"],
+	["-", "O", "-"],
+	["-", "-", "X"]
+    ]
+    o_winning = [
+	["X", "X", "O"],
+	["-", "X", "-"],
+	["-", "O", "O"]
+    ]
+    result = tic_tac_toe.minimax(x_winning, player)
+    print(result)
+    result = tic_tac_toe.minimax(o_winning, player)
+    print(result)
+    #table = [['X', 'X', 'O'], ['O', 'O', 'X'], ['X', 'O', 'X']]
+    #result = tic_tac_toe.is_table_filled(table)
+    #print(result)
