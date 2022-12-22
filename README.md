@@ -1,4 +1,7 @@
-## Basic Terminal Tic Tac Toe written in Python
+## Tic Tac Toe Game Against a Minimax Decision Making Algorithm
+
+## What is Minimax
+Minimax is an algorithm that runs recursively to check every possible game case while taking turns between the ai player and human player and guessing the case. In the base case it returns a positive number for wins and negative number for losses. Hence the algorithm can pick the cell that has the most possible win cases and avoid losing. Because the algorithm can check the every possible case it is impossible to win against the minimax.
 
 ## Rules:
 First person to get all the cells in a horizontal, vertical or diagonal line wins.
