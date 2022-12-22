@@ -1,5 +1,4 @@
 import random
-from copy import deepcopy
 
 class TicTacToe:
     table = []
@@ -163,7 +162,7 @@ class TicTacToe:
 def main():
     # Create the class instance
     tic_tac_toe = TicTacToe()
-    # Make user pick side
+    # Make user pick siXde
     tic_tac_toe.pick_side()
     # Game loop
     while True:
