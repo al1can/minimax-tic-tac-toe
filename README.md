@@ -6,6 +6,8 @@ The input needs to be an integer values in the range of 1-3 and the order x and 
 
 ## Basic Gameplay
 
+                Pick the side you want to play as. X or O
+                X
                  - | - | -
                 ---+---+---
                  - | - | -
@@ -15,25 +17,11 @@ The input needs to be an integer values in the range of 1-3 and the order x and 
                 1 1
                  X | - | -
                 ---+---+---
-                 - | - | -
-                ---+---+---
-                 - | - | -
-                Now it is O's turn.
-                2 2
-                 X | - | -
-                ---+---+---
                  - | O | -
                 ---+---+---
                  - | - | -
                 Now it is X's turn.
                 2 1
-                 X | X | -
-                ---+---+---
-                 - | O | -
-                ---+---+---
-                 - | - | -
-                Now it is O's turn.
-                3 1
                  X | X | O
                 ---+---+---
                  - | O | -
@@ -43,31 +31,24 @@ The input needs to be an integer values in the range of 1-3 and the order x and 
                 1 3
                  X | X | O
                 ---+---+---
-                 - | O | -
+                 O | O | -
                 ---+---+---
                  X | - | -
-                Now it is O's turn.
+                Now it is X's turn.
                 3 2
                  X | X | O
                 ---+---+---
-                 - | O | O
+                 O | O | X
                 ---+---+---
-                 X | - | -
+                 X | O | -
                 Now it is X's turn.
                 3 3
                  X | X | O
                 ---+---+---
-                 - | O | O
+                 O | O | X
                 ---+---+---
-                 X | - | X
-                Now it is O's turn.
-                1 2
-                 X | X | O
-                ---+---+---
-                 O | O | O
-                ---+---+---
-                 X | - | X
-                player O is won!
+                 X | O | X
+                It is a draw!
 
 ## Handling of inputs
 
